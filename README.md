@@ -12,9 +12,7 @@
 | NS_NSOLID    | nsolid_3.x    |
 | NS_DISTRO    | bionic        |
 
----
-
-## Usage
+## Usage
 
 To pull the image
 
