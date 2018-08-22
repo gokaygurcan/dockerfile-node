@@ -1,0 +1,23 @@
+# gokaygurcan/dockerfile-node
+
+language: bash
+services: docker
+
+sudo: false
+
+git:
+  depth: 1
+
+before_script:
+  - docker version
+  - docker info
+
+script:
+  - docker build --rm -t gokaygurcan/node:test .
+  - docker run --rm gokaygurcan/node:test node --version
+  - docker run --rm gokaygurcan/node:test npm --version
+  - docker run --rm gokaygurcan/node:test yarn --version
+  - docker run --rm gokaygurcan/node:test nsolid --version
+
+notifications:
+  email: false
