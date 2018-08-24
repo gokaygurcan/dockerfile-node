@@ -16,14 +16,7 @@ RUN set -ex && \
     apt-get update -qq && \
     apt-get upgrade -yqq && \
     apt-get install -yqq --no-install-recommends --no-install-suggests \
-    apt-transport-https \
-    apt-utils \
-    build-essential \
-    ca-certificates \
-    curl \
-    gnupg\
-    lsb-release \
-    make && \
+    lsb-release && \
     mkdir -p ${USR_SRC_NODE}
 
 WORKDIR ${USR_SRC_NODE}
@@ -34,6 +27,7 @@ RUN curl -sLf -o /dev/null "https://deb.nodesource.com/${NS_NODE}/dists/${NS_DIS
     apt-get update -qq && \
     apt-get install -y nodejs && \
     npm config list > /dev/null 2>&1 && \
+    mkdir -p /home/ubuntu/.config && \
     chown -R ubuntu:$(id -gn ubuntu) /home/ubuntu/.config && \
     curl -s https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
@@ -43,9 +37,8 @@ RUN curl -sLf -o /dev/null "https://deb.nodesource.com/${NS_NODE}/dists/${NS_DIS
     curl -s http://nsolid-deb.nodesource.com/gpgkey/NODESOURCE-NSOLID-GPG-SIGNING-KEY | apt-key add - && \
     echo "deb http://nsolid-deb.nodesource.com/${NS_NSOLID} ${NS_DISTRO} main" | tee /etc/apt/sources.list.d/nodesource-nsolid.list && \
     apt-get update && \
-    apt-get install -y nsolid-carbon
-
-RUN apt-get autoclean -yqq && \
+    apt-get install -y nsolid-carbon && \
+    apt-get autoclean -yqq && \
     apt-get autoremove -yqq && \
     rm -rf ${USR_SRC_NODE} && \
     rm -rf /var/lib/apt/lists/* && \
