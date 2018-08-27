@@ -12,12 +12,7 @@ ENV DEBIAN_FRONTEND="noninteractive" \
 
 USER root
 
-RUN set -ex && \
-    apt-get update -qq && \
-    apt-get upgrade -yqq && \
-    apt-get install -yqq --no-install-recommends --no-install-suggests \
-    lsb-release && \
-    mkdir -p ${USR_SRC_NODE}
+RUN mkdir -p ${USR_SRC_NODE}
 
 WORKDIR ${USR_SRC_NODE}
 RUN curl -sLf -o /dev/null "https://deb.nodesource.com/${NS_NODE}/dists/${NS_DISTRO}/Release" && \
@@ -29,6 +24,9 @@ RUN curl -sLf -o /dev/null "https://deb.nodesource.com/${NS_NODE}/dists/${NS_DIS
     npm config list > /dev/null 2>&1 && \
     mkdir -p /home/ubuntu/.config && \
     chown -R ubuntu:$(id -gn ubuntu) /home/ubuntu/.config && \
+    mkdir -p /home/ubuntu/.npm-global && \
+    chown -R ubuntu:$(id -gn ubuntu) /home/ubuntu/.npm-global && \
+    npm config --global set prefix /home/ubuntu/.npm-global && \
     curl -s https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
     apt-get update && \
