@@ -7,7 +7,7 @@
 | Name         | Value         |
 | ------------ | ------------- |
 | USR_SRC_NODE | /usr/src/node |
-| NS_NODE      | node_8.x      |
+| NS_NODE      | node_10.x     |
 | NS_NSOLID    | nsolid_3.x    |
 | NS_DISTRO    | bionic        |
 
