@@ -35,7 +35,7 @@ RUN curl -sLf -o /dev/null "https://deb.nodesource.com/${NS_NODE}/dists/${NS_DIS
     curl -s http://nsolid-deb.nodesource.com/gpgkey/NODESOURCE-NSOLID-GPG-SIGNING-KEY | apt-key add - && \
     echo "deb http://nsolid-deb.nodesource.com/${NS_NSOLID} ${NS_DISTRO} main" | tee /etc/apt/sources.list.d/nodesource-nsolid.list && \
     apt-get update && \
-    apt-get install -y nsolid-carbon && \
+    apt-get install -y nsolid-dubnium && \
     apt-get autoclean -yqq && \
     apt-get autoremove -yqq && \
     rm -rf ${USR_SRC_NODE} && \
