@@ -30,7 +30,7 @@ docker pull gokaygurcan/node:latest
 
 # or
 
-docker pull gokaygurcan/node:carbon
+docker pull gokaygurcan/node:dubnium
 ```
 
 ---

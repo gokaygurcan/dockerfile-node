@@ -31,9 +31,10 @@ RUN curl -sLf -o /dev/null "https://deb.nodesource.com/${NS_NODE}/dists/${NS_DIS
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
     apt-get update && \
     apt-get install -y yarn && \
-    curl -sLf -o /dev/null "http://nsolid-deb.nodesource.com/${NS_NSOLID}/dists/${NS_DISTRO}/Release" && \
-    curl -s http://nsolid-deb.nodesource.com/gpgkey/NODESOURCE-NSOLID-GPG-SIGNING-KEY | apt-key add - && \
-    echo "deb http://nsolid-deb.nodesource.com/${NS_NSOLID} ${NS_DISTRO} main" | tee /etc/apt/sources.list.d/nodesource-nsolid.list && \
+    curl -sLf -o /dev/null "https://deb.nodesource.com/${NS_NSOLID}/dists/${NS_DISTRO}/Release" && \
+    curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
+    echo "deb https://deb.nodesource.com/${NS_NSOLID} ${NS_DISTRO} main" | tee /etc/apt/sources.list.d/nodesource-nsolid.list && \
+    echo "deb-src https://deb.nodesource.com/${NODEREPO} ${DISTRO} main" | tee -a /etc/apt/sources.list.d/nodesource-nsolid.list && \
     apt-get update && \
     apt-get install -y nsolid-dubnium && \
     apt-get autoclean -yqq && \
