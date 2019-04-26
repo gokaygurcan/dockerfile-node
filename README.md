@@ -4,16 +4,11 @@
 
 <h2>Environment variables</h2>
 
-| Name         | Value         |
+| Variable     | Value         |
 | ------------ | ------------- |
-| USR_SRC_NODE | /usr/src/node |
 | NS_NODE      | node_10.x     |
 | NS_NSOLID    | nsolid_3.x    |
 | NS_DISTRO    | bionic        |
-
-<h2>Additional packages</h2>
-
-- lsb-release
 
 <h2>CMD</h2>
 
@@ -27,10 +22,12 @@ To pull the image
 
 ```bash
 docker pull gokaygurcan/node:latest
+```
 
-# or
+And then,
 
-docker pull gokaygurcan/node:dubnium
+```bash
+docker run gokaygurcan/node:latest node -e "console.log(process.versions);"
 ```
 
 ---
