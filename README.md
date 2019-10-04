@@ -29,7 +29,3 @@ And then,
 ```bash
 docker run gokaygurcan/node:latest node -e "console.log(process.versions);"
 ```
-
----
-
-[![Buy me a coffee](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-sm-2.svg)](https://www.buymeacoffee.com/gokaygurcan)
