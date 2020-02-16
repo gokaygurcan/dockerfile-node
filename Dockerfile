@@ -5,50 +5,48 @@ FROM gokaygurcan/ubuntu:latest
 # metadata
 LABEL maintainer "Gökay Gürcan <docker@gokaygurcan.com>"
 
-ENV DEBIAN_FRONTEND="noninteractive" \
-    NS_NODE=node_10.x \
-    NS_NSOLID=nsolid_3.x \
-    NS_DISTRO=bionic
+ENV DEBIAN_FRONTEND="noninteractive"
+ENV NVM_DIR="/home/ubuntu/.nvm"
+
+ARG NODE_VERSION=12.16.0
+ENV NODE_VERSION=$NODE_VERSION
 
 USER root
 
-RUN mkdir -p /usr/src/node && \
-    cd /usr/src/node && \
-    # install node
-    curl -sLf -o /dev/null "https://deb.nodesource.com/${NS_NODE}/dists/${NS_DISTRO}/Release" && \
-    curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
-    echo "deb https://deb.nodesource.com/${NS_NODE} ${NS_DISTRO} main" | tee /etc/apt/sources.list.d/nsolid.list && \
-    echo "deb-src https://deb.nodesource.com/${NS_NODE} ${NS_DISTRO} main" | tee -a /etc/apt/sources.list.d/nsolid.list && \
+# update
+RUN apt-get update -qq && \
+    apt-get upgrade -yqq
+
+USER ubuntu
+
+# install node version manager
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash && \
+    . $NVM_DIR/nvm.sh && \
+    nvm install $NODE_VERSION && \
+    nvm alias default $NODE_VERSION && \
+    nvm use default
+
+# add node and npm to PATH
+ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
+ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+
+USER root
+
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list && \
     apt-get update -qq && \
-    apt-get install -yqq nodejs && \
-    # configure npm
-    npm config list > /dev/null 2>&1 && \
-    mkdir -p /home/ubuntu/.config && \
-    chown -R ubuntu:$(id -gn ubuntu) /home/ubuntu/.config && \
-    mkdir -p /home/ubuntu/.npm-global && \
-    chown -R ubuntu:$(id -gn ubuntu) /home/ubuntu/.npm-global && \
-    npm config --global set prefix /home/ubuntu/.npm-global && \
-    # install yarn
-    curl -s https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
-    apt-get update -qq && \
-    apt-get install -y yarn && \
-    # install nsolid
-    curl -sLf -o /dev/null "http://nsolid-deb.nodesource.com/${NS_NSOLID}/dists/${NS_DISTRO}/Release" && \
-    curl -s http://nsolid-deb.nodesource.com/gpgkey/NODESOURCE-NSOLID-GPG-SIGNING-KEY | apt-key add - && \
-    echo "deb http://nsolid-deb.nodesource.com/${NS_NSOLID} ${NS_DISTRO} main" | tee /etc/apt/sources.list.d/nsolid.list && \
-    apt-get update -qq && \
-    apt-get install -yqq nsolid-dubnium && \
-    # cleanup
-    apt-get autoclean -yqq && \
+    apt-get install --no-install-recommends -yqq yarn
+
+# cleanup
+RUN apt-get autoclean -yqq && \
     apt-get autoremove -yqq && \
     rm -rf /usr/src/* && \
     rm -rf /var/lib/{apt,dpkg,cache,log}/ && \
     rm -rf /var/tmp/* && \
     rm -rf /tmp/*
 
-WORKDIR /home/ubuntu
-
 USER ubuntu
+
+WORKDIR /home/ubuntu
 
 CMD [ "node" ]
