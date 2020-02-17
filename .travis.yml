@@ -17,7 +17,6 @@ script:
   - docker run --rm gokaygurcan/node:test node --version
   - docker run --rm gokaygurcan/node:test npm --version
   - docker run --rm gokaygurcan/node:test yarn --version
-  - docker run --rm gokaygurcan/node:test nsolid --version
 
 notifications:
   email: false
